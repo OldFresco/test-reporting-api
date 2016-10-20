@@ -6,6 +6,9 @@ var express = require('express')
 var bodyParser = require('body-parser')
 var app = express()
 var morgan = require('morgan')
+var mongoose = require('mongoose')
+var config = require('./config/config')
+var TestResult = require('./app/models/result')
 
 // configure app
 app.use(morgan('dev')) // log requests to the console
@@ -15,23 +18,13 @@ app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
 var port = process.env.PORT || 8080 // set our port
-
-var mongoose = require('mongoose')
-mongoose.connect('mongodb://localhost') // connect to our database
-var TestResult = require('./app/models/result')
+mongoose.connect(config().MONGO_URI) // connect to our database
 
 // ROUTES FOR OUR API
 // =============================================================================
 
 // create our router
 var router = express.Router()
-
-// middleware to use for all requests
-router.use(function(req, res, next) {
-    // do logging
-    console.log('A Request happened.')
-    next()
-})
 
 // Health check
 router.get('/health', function(req, res) {
@@ -45,6 +38,7 @@ router.route('/results')
 // create a result resouce (accessed at POST http://localhost:8080/test/results)
 .post(function(req, res) {
     var result = new TestResult()
+
     result.name = req.body.name;
     result.version = req.body.version
     result.environment = req.body.environment
