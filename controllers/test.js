@@ -5,7 +5,6 @@ var TestResult = require('../app/models/result')
 
 router.route('/results')
 
-// create a result resouce (accessed at POST http://localhost:8080/test/results)
 .post(function (req, res) {
     var result = new TestResult()
 

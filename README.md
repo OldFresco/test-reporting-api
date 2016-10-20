@@ -14,4 +14,4 @@ This api allows for test results to be persisted in mongo datastore
 
 ## Testing the API
 
-Test the API using [Postman](https://chrome.google.com/webstore/detail/{postman})
+Test the API using [Postman](https://www.getpostman.com/collections/ea52d767db0c9273a81f)
