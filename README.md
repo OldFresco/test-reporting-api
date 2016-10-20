@@ -1,4 +1,4 @@
-# Test Reporting API Node and Express
+# Test Reporting API
 
 This api allows for test results to be persisted in mongo datastore
 
@@ -8,10 +8,10 @@ This api allows for test results to be persisted in mongo datastore
 
 ## Installation
 
-- Clone the repo: `git clone git@github.com:{mygit}`
+- Clone the repo: `git clone https://github.com/OldFresco/test-reporting-api.git`
 - Install dependencies: `npm install`
 - Start the server: `node server.js`
 
 ## Testing the API
 
-Test your API using [Postman](https://chrome.google.com/webstore/detail/{postman})
+Test the API using [Postman](https://chrome.google.com/webstore/detail/{postman})

@@ -3,7 +3,7 @@
     "main": "server.js",
     "repository": {
         "type": "git",
-        "url": "git://github.com/{mygit}"
+        "url": "git://github.com/OldFresco/test-reporting-api.git"
     },
     "scripts": {
         "start": "node server.js"
