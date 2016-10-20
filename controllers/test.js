@@ -5,34 +5,40 @@ var TestResult = require('../app/models/result')
 
 router.route('/results')
 
-.post(function (req, res) {
-    var result = new TestResult()
+.post(function(req, res) {
+    var results = [];
 
-    result.name = req.body.name;
-    result.version = req.body.version
-    result.environment = req.body.environment
-    result.testRunStartedAtTime = req.body.testRunStartedAtTime
-    result.testRunCompletedAtTime = req.body.testRunCompletedAtTime
-    result.overallResult = req.body.overallResult
-    result.triggeredBy = req.body.triggeredBy
-    result.triggeredFrom = req.body.triggeredFrom
-    result.xmlResults = req.body.xmlResults
-    result.htmlReport = req.body.htmlReport
+    for (var i = 0; i < req.body.length; i++) {
+        var result = new TestResult()
 
-    result.save(function (err) {
-        if (err)
-            res.send(err)
+        result.name = req.body[i].name
+        result.version = req.body[i].version
+        result.environment = req.body[i].environment
+        result.testRunStartedAtTime = req.body[i].testRunStartedAtTime
+        result.testRunCompletedAtTime = req.body[i].testRunCompletedAtTime
+        result.overallResult = req.body[i].overallResult
+        result.triggeredBy = req.body[i].triggeredBy
+        result.triggeredFrom = req.body[i].triggeredFrom
+        result.xmlResults = req.body[i].xmlResults
+        result.htmlReport = req.body[i].htmlReport
 
-        res.json({
-            'createdAt': Date.now(),
-            'state': 'created',
-            'content': result,
-            'links': [{
-                'href': req.protocol + req.hostname + req.originalUrl,
-                'ref': 'self',
-                'method': 'POST'
-            }]
+        results[i] = result
+
+        result.save(function(err) {
+            if (err)
+                res.send(err)
         })
+    }
+
+    res.json({
+        'createdAt': Date.now(),
+        'state': 'created',
+        'content': results,
+        'links': [{
+            'href': req.protocol + req.hostname + req.originalUrl,
+            'ref': 'self',
+            'method': 'POST'
+        }]
     })
 })
 

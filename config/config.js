@@ -3,6 +3,9 @@ module.exports = function() {
         case 'development':
             return { MONGO_URI: 'mongodb://localhost/testing' }
 
+        case 'test':
+            return { MONGO_URI: 'mongodb://localhost/testing' }
+
         case 'production':
             return { MONGO_URI: 'mongodb://localhost/testing' }
 
