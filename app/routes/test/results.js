@@ -1,7 +1,8 @@
 var express = require('express'),
     router = express.Router()
 
-var TestResult = require('../app/models/result')
+var validate = require('express-jsonschema').validate;
+var TestResult = require('../../../app/models/result')
 
 router.route('/results')
 
@@ -35,7 +36,7 @@ router.route('/results')
         'state': 'created',
         'content': results,
         'links': [{
-            'href': req.protocol + req.hostname + req.originalUrl,
+            'href': req.protocol + '://' + req.hostname + req.originalUrl,
             'ref': 'self',
             'method': 'POST'
         }]
