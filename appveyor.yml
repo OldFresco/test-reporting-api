@@ -1,0 +1,109 @@
+# master
+-
+  #---------------------------------#
+  #      general configuration      #
+  #---------------------------------#
+
+  # branches to build
+  branches:
+    only:
+      - master
+
+  skip_tags: true
+
+  # skip commits with particular message or from user
+  skip_commits:
+    message: /README.md edited online with Bitbucket/
+
+  # version format
+  version: 1.0.0
+
+  environment:
+    nodejs_version: "Stable"
+
+  install:
+    - ps: Install-Product node $env:nodejs_version
+    - npm install -g npm
+    - ps: $env:path = $env:appdata + "\npm;" + $env:path
+    - npm install
+
+  test_script:
+    - cmd: npm run test
+
+  matrix:
+    fast_finish: true
+
+  clone_depth: 10
+
+  deploy:
+    - provider: Environment
+      name: Azure Test Reporting API
+
+  init:
+    - git config --global core.autocrlf true
+
+  cache:
+    - node_modules -> **\package.json
+
+  on_failure:
+    - ps: Update-AppveyorBuild -Version "$($env:appveyor_build_version)-$(Get-Date -format HHmmss)-failed"
+
+  on_success:
+    - ps: git config --global user.email "$($env:Git_Email)"
+    - ps: git config --global user.name "$($env:Git_Username)"
+    - ps: git config --global credential.helper store
+    - ps: Add-Content "$env:USERPROFILE\.git-credentials" "https://$($env:Git_Username):$($env:Git_Password)@bitbucket.org`n"
+    - ps: echo $($env:APPVEYOR_REPO_NAME)
+    - ps: git remote add bitbucket https://$($env:Git_Username)@bitbucket.org/$($env:APPVEYOR_REPO_NAME).git
+    - ps: git tag $($env:appveyor_build_version) $($env:APPVEYOR_REPO_COMMIT)
+    - ps: git push bitbucket --tags --quiet
+
+# everything except master
+-
+  #---------------------------------#
+  #      general configuration      #
+  #---------------------------------#
+
+  # branches to build
+  branches:
+    except:
+      - master                      # build master
+
+  skip_tags: true
+
+  # skip commits with particular message or from user
+  skip_commits:
+    message: /README.md edited online with Bitbucket/
+
+  # version format
+  version: 2.46.0.{build}-{branch}
+
+  environment:
+    nodejs_version: "Stable"
+
+  install:
+    - ps: Install-Product node $env:nodejs_version
+    - npm install -g npm
+    - ps: $env:path = $env:appdata + "\npm;" + $env:path
+    - npm install
+
+  test_script:
+    - cmd: npm run test
+
+  matrix:
+    fast_finish: true
+
+  clone_depth: 10
+
+  deploy:
+    - provider: Environment
+      name: Azure Test Reporting API
+
+  init:
+    - git config --global core.autocrlf true
+
+  cache:
+    - node_modules -> **\package.json
+
+  on_failure:
+    - ps: Update-AppveyorBuild -Version "$($env:appveyor_build_version)-$(Get-Date -format HHmmss)-failed"
