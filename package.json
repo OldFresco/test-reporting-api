@@ -1,20 +1,28 @@
 {
-  "name": "test-reporting-api",
-  "main": "server.js",
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/OldFresco/test-reporting-api.git"
-  },
-  "scripts": {
-    "start": "node server.js"
-  },
-  "author": "SequensisDev",
-  "license": "MIT",
-  "dependencies": {
-    "body-parser": "~1.0.1",
-    "express": "~4.0.0",
-    "express-jsonschema": "^1.1.6",
-    "mongoose": "~3.6.13",
-    "morgan": "~1.0.0"
-  }
+    "name": "test-reporting-api",
+    "main": "server.js",
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/OldFresco/test-reporting-api.git"
+    },
+    "scripts": {
+        "start:dev": "SET NODE_ENV=dev && node server.js",
+        "start:test": "SET NODE_ENV=test && node server.js",
+        "start:prod": "SET NODE_ENV=prod && node server.js",
+        "test": "mocha --timeout 10000"
+    },
+    "author": "SequensisDev",
+    "license": "MIT",
+    "dependencies": {
+        "body-parser": "~1.0.1",
+        "express": "~4.0.0",
+        "express-jsonschema": "^1.1.6",
+        "mongoose": "~3.6.13",
+        "morgan": "~1.0.0"
+    },
+    "devDependencies": {
+        "chai": "^3.5.0",
+        "chai-http": "^2.0.1",
+        "mocha": "^2.4.5"
+    }
 }

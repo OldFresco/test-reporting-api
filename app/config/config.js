@@ -1,12 +1,12 @@
 module.exports = function() {
     switch (process.env.NODE_ENV) {
-        case 'development':
+        case 'dev':
             return { MONGO_URI: 'mongodb://localhost/testing' }
 
         case 'test':
             return { MONGO_URI: 'mongodb://localhost/testing' }
 
-        case 'production':
+        case 'prod':
             return { MONGO_URI: 'mongodb://localhost/testing' }
 
         default:

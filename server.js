@@ -14,7 +14,9 @@ var TestResult = require('./app/models/result')
 var port = process.env.PORT || 8080
 
 // configure app
-app.use(morgan('dev')) // log requests to the console
+if (process.env.NODE_ENV === 'dev') {
+    app.use(morgan('dev')) // log requests to the console
+}
 
 // configure body parser
 app.use(bodyParser.urlencoded({ extended: true }))
@@ -30,3 +32,5 @@ mongoose.connect(config().MONGO_URI)
 // =============================================================================
 app.listen(port)
 console.log('Server listening on port: ' + port)
+
+module.exports = app
