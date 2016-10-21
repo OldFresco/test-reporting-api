@@ -1,7 +1,9 @@
 var TestResultValidaitonSchema = {
     "type": "array",
+    "minItems": 1,
     "items": [{
-        "type": "object"
+        "type": "object",
+        required: true,
     }]
 }
 

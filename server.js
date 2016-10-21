@@ -20,26 +20,6 @@ app.use(morgan('dev')) // log requests to the console
 app.use(bodyParser.urlencoded({ extended: true }))
 app.use(bodyParser.json())
 
-// Register middleware
-app.use(function(err, req, res, next) {
-    var responseData;
-
-    if (err.name === 'JsonSchemaValidation') {
-        //console.log(err.message);
-
-        res.status(400)
-        responseData = {
-            status: 'Bad Request',
-            jsonSchemaValidation: true,
-            validations: err.validations
-        };
-
-        res.json(responseData);
-    } else {
-        next(err);
-    }
-});
-
 // Register routes
 app.use(require('./app/routes'))
 

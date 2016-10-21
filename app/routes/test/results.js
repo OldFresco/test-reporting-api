@@ -5,7 +5,25 @@ var validate = require('express-jsonschema').validate
 var resultFormatSpecification = require('../../services/schema-validation')
 var TestResult = require('../../models/result')
 
+// Register middleware
 router.use(validate({ body: resultFormatSpecification }))
+router.use(function(err, req, res, next) {
+    var responseData;
+
+    if (err.name === 'JsonSchemaValidation') {
+        res.status(400)
+        responseData = {
+            status: 'Bad Request',
+            jsonSchemaValidation: true,
+            validations: err.validations
+        }
+
+        res.json(responseData);
+    } else {
+        next(err);
+    }
+})
+
 router.route('/results').post(function(req, res) {
     var results = [];
     for (var i = 0; i < req.body.length; i++) {
