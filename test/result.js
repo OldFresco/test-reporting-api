@@ -13,9 +13,9 @@ chai.use(chaiHttp);
 describe('RESULTS TESTS', () => {
     beforeEach((done) => {
         Result.remove({}, (err) => {
-            done();
-        });
-    });
+            done()
+        })
+    })
 
     describe('GIVEN a valid request to POST a correctly formatted test result', () => {
         let testResult = [{
@@ -42,23 +42,24 @@ describe('RESULTS TESTS', () => {
                 .post('/test/results')
                 .send(testResult)
                 .end((err, res) => {
-                    res.should.have.status(200);
-                    done();
-                });
-        });
+                    res.should.have.status(200)
+                    done()
+                })
+        })
 
         it('THEN it should should return an object with the expected properties', (done) => {
             chai.request(server)
                 .post('/test/results')
                 .send(testResult)
                 .end((err, res) => {
+                    res.body.should.be.a('object')
                     res.body.should.have.property('content')
                     res.body.should.have.property('state').eql('created')
                     res.body.should.have.property('links').eql(links)
-                    done();
-                });
-        });
-    });
+                    done()
+                })
+        })
+    })
 
     describe('GIVEN an invalid request to POST a badly formatted test result', () => {
 
@@ -82,19 +83,20 @@ describe('RESULTS TESTS', () => {
                 .end((err, res) => {
                     res.should.have.status(400);
                     done();
-                });
-        });
+                })
+        })
 
         it('THEN it should should return an object with the expected properties', (done) => {
             chai.request(server)
                 .post('/test/results')
                 .send(invalidTestResult)
                 .end((err, res) => {
+                    res.body.should.be.a('object')
                     res.body.should.have.property('status').eql('Bad Request')
                     res.body.should.have.property('jsonSchemaValidation').eql(true)
                     res.body.should.have.property('validations')
                     done();
-                });
-        });
-    });
-});
+                })
+        })
+    })
+})
