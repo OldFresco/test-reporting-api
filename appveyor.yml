@@ -94,7 +94,7 @@
     message: /README.md edited online with Bitbucket/
 
   # version format
-  version: 2.46.0.{build}-{branch}
+  version: 1.0.0.{build}-{branch}
 
   environment:
     nodejs_version: "Stable"
