@@ -10,7 +10,7 @@ let should = chai.should();
 
 chai.use(chaiHttp);
 
-describe('RESULTS TESTS', () => {
+describe('POST RESULTS TESTS', () => {
     beforeEach((done) => {
         Results.remove({}, (err) => {
             done()
