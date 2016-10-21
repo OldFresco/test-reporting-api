@@ -1,7 +1,7 @@
 process.env.NODE_ENV = 'test';
 
 let mongoose = require("mongoose");
-let Result = require('../app/models/result');
+let Results = require('../app/models/result');
 
 let chai = require('chai');
 let chaiHttp = require('chai-http');
@@ -12,7 +12,7 @@ chai.use(chaiHttp);
 
 describe('RESULTS TESTS', () => {
     beforeEach((done) => {
-        Result.remove({}, (err) => {
+        Results.remove({}, (err) => {
             done()
         })
     })
@@ -37,7 +37,7 @@ describe('RESULTS TESTS', () => {
             "method": "POST"
         }]
 
-        it('THEN it should should return an HTTP success code', (done) => {
+        it('THEN it should return an HTTP success code', (done) => {
             chai.request(server)
                 .post('/test/results')
                 .send(testResult)
@@ -47,7 +47,7 @@ describe('RESULTS TESTS', () => {
                 })
         })
 
-        it('THEN it should should return an object with the expected properties', (done) => {
+        it('THEN it should return an object with the expected properties', (done) => {
             chai.request(server)
                 .post('/test/results')
                 .send(testResult)
@@ -59,11 +59,26 @@ describe('RESULTS TESTS', () => {
                     done()
                 })
         })
+
+        it('THEN it should persist a test record containing the test result into the datastore', (done) => {
+            chai.request(server)
+                .post('/test/results')
+                .send(testResult)
+                .end((err, res) => {
+                    Results.findOne({}, (err, results) => {
+                        if (err) return
+                        results.should.be.a('object')
+                        results.count.should.be(1)
+                        results.body.should.have.property('name').eql('LikelyLoans.UserJourneyTests')
+                    })
+                    done()
+                })
+        })
     })
 
     describe('GIVEN an invalid request to POST a badly formatted test result', () => {
 
-        let invalidTestResult = {
+        let invalidFormatTestResult = {
             name: "LikelyLoans.UserJourneyTests",
             version: "1.7.0.114-TEC461",
             environment: "DEV",
@@ -76,20 +91,20 @@ describe('RESULTS TESTS', () => {
             htmlReport: "<html>Test Passed</html>"
         }
 
-        it('THEN it should should return an HTTP bad request code', (done) => {
+        it('THEN it should return an HTTP bad request code', (done) => {
             chai.request(server)
                 .post('/test/results')
-                .send(invalidTestResult)
+                .send(invalidFormatTestResult)
                 .end((err, res) => {
                     res.should.have.status(400);
                     done();
                 })
         })
 
-        it('THEN it should should return an object with the expected properties', (done) => {
+        it('THEN it should return an object with the expected properties', (done) => {
             chai.request(server)
                 .post('/test/results')
-                .send(invalidTestResult)
+                .send(invalidFormatTestResult)
                 .end((err, res) => {
                     res.body.should.be.a('object')
                     res.body.should.have.property('status').eql('Bad Request')
