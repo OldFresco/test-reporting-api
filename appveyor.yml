@@ -27,6 +27,24 @@
     - ps: $env:path = $env:appdata + "\npm;" + $env:path
     - npm install
 
+      # mongodb
+    - ps: >-
+          if (!(Test-Path -path "C:\downloads\mongodb.zip"))
+          {
+            Write-Host "Downloading and extracting MongoDB..."
+            Invoke-WebRequest $env:MongoDb_DownloadUri -OutFile C:\downloads\mongodb.zip
+          }
+          else
+          {
+            Write-Host "Using cached MongoDB download..."
+          }
+
+    - ps: Write-Host "Installing and starting MongoDB..."
+    - ps: New-Item -ItemType Directory -Force -Path C:\mongo\data
+    - ps: 7z e C:\downloads\mongodb.zip -oC:\mongo -aoa
+    - ps: Start-Process -NoNewWindow C:\mongo\mongod.exe -ArgumentList '--dbpath=C:\mongo\data','--logpath=C:\mongo\log','--smallfiles'
+
+
   test_script:
     - cmd: npm run test
 
@@ -86,6 +104,24 @@
     - npm install -g npm
     - ps: $env:path = $env:appdata + "\npm;" + $env:path
     - npm install
+
+      # mongodb
+    - ps: >-
+          if (!(Test-Path -path "C:\downloads\mongodb.zip"))
+          {
+            Write-Host "Downloading and extracting MongoDB..."
+            Invoke-WebRequest $env:MongoDb_DownloadUri -OutFile C:\downloads\mongodb.zip
+          }
+          else
+          {
+            Write-Host "Using cached MongoDB download..."
+          }
+
+    - ps: Write-Host "Installing and starting MongoDB..."
+    - ps: New-Item -ItemType Directory -Force -Path C:\mongo\data
+    - ps: 7z e C:\downloads\mongodb.zip -oC:\mongo -aoa
+    - ps: Start-Process -NoNewWindow C:\mongo\mongod.exe -ArgumentList '--dbpath=C:\mongo\data','--logpath=C:\mongo\log','--smallfiles'
+
 
   test_script:
     - cmd: npm run test
