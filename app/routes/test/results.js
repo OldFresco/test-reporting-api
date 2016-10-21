@@ -1,14 +1,13 @@
 var express = require('express'),
     router = express.Router()
 
-var validate = require('express-jsonschema').validate;
-var TestResult = require('../../../app/models/result')
+var validate = require('express-jsonschema').validate
+var resultFormatSpecification = require('../../services/schema-validation')
+var TestResult = require('../../models/result')
 
-router.route('/results')
-
-.post(function(req, res) {
+//router.use(validate({ body: resultFormatSpecification }))
+router.route('/results').post(function(req, res) {
     var results = [];
-
     for (var i = 0; i < req.body.length; i++) {
         var result = new TestResult()
 
