@@ -3,7 +3,7 @@ var TestResultValidaitonSchema = {
     "minItems": 1,
     "items": [{
         "type": "object",
-        required: true,
+        required: true
     }]
 }
 

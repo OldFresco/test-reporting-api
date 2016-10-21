@@ -43,13 +43,15 @@ router.route('/results').post(function(req, res) {
         results[i] = result
 
         result.save(function(err) {
-            if (err)
-                res.send(err)
+            if (err) {
+                res.status(400)
+                res.json({ error: err })
+            }
         })
     }
 
     res.json({
-        'createdAt': Date.now(),
+        'createdAt': new Date(),
         'state': 'created',
         'content': results,
         'links': [{
